@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Great Step{% endblock %}
+
+{% block content %}
+<div class="signup">
+    <h1>Sign Up</h1>
+    <form method="POST" action="{{ url_for('signup') }}">
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('signin') }}">Sign In</a></p>
+</div>
+{% endblock %}

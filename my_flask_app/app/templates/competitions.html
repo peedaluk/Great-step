@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Competitions - Great Step{% endblock %}
+
+{% block content %}
+<section class="competitions">
+    <h1>Competitions</h1>
+    <div class="events-list">
+        <div class="event-type">
+            <h2>Tech Events 2025</h2>
+            <div class="event-cards">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/safetydata.jpg') }}" alt="Mine Safety and Geo-Data Analytics">
+                    <h3>Mine Safety and Geo-Data Analytics</h3>
+                    <a href="{{ url_for('safety_da') }}">View Details</a>
+                </div>
+                <!-- Add more cards -->
+            </div>
+        </div>
+        <div class="event-type">
+            <h2>Oncampus Events 2025</h2>
+            <div class="event-cards">
+                <!-- Add event cards -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

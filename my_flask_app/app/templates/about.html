@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Great Step{% endblock %}
+
+{% block content %}
+<section class="about">
+    <h1>About Us</h1>
+    <div class="about_container">
+        <section class="info_cards">
+            <article>
+                <h2>Head of Department</h2>
+                <h3>Prof. Biswajit Samanta</h3>
+                <img src="{{ url_for('static', filename='images/hod.jpg') }}" alt="HOD">
+            </article>
+            <!-- Add more cards for GSec, etc. -->
+        </section>
+    </div>
+</section>
+{% endblock %}

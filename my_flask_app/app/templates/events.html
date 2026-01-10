@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Events - Great Step{% endblock %}
+
+{% block content %}
+<section class="events">
+    <h1>Events</h1>
+    <div class="events-tabs">
+        <a href="{{ url_for('competitions') }}">Competitions</a>
+        <a href="{{ url_for('workshops') }}">Workshops</a>
+        <a href="{{ url_for('panel_discussion') }}">Panel Discussion</a>
+    </div>
+    <div class="events-content">
+        <!-- Content will be loaded based on the tab -->
+    </div>
+</section>
+{% endblock %}

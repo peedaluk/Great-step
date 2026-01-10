@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Great Step{% endblock %}
+
+{% block content %}
+<div class="header section__padding">
+    <div class="header-content">
+        <div class="header-image">
+            <img src="{{ url_for('static', filename='images/ncl.png') }}" alt="NCL" style="height: 90px;">
+            <h2>&</h2>
+            <img src="{{ url_for('static', filename='images/gmdc.jpg') }}" alt="GMDC">
+        </div>
+
+        <h2 class="text__tmes">Technology Mining Engineering Society</h2>
+        <p style="font-size: 1.6rem;" class="animate-charcter">
+            Presents
+        </p>
+        <h1 class="animate-charcter">GREAT-STEP"25</h1>
+        <h2 class="animate-charcter" style="font-size: 1.2rem;">28th - 30th March</h2>
+        <p>
+            Upholding the esteem of being the antecedent, the Department of Mining Engineering, IIT Kharagpur has always believed in the flow of practical knowledge with innovation as inspiration,
+            which has rejuvenated the ancestral engineering ideals into the modern facts.
+        </p>
+        <p>
+            With this vision as guidance and zeal to keep pace with the developments in the Mining and Geology industries, the Department of Mining engineering initiated{" "}
+            <b>
+                <a href="https://tmesiitkgp.in/">GREATSTEP</a>
+            </b>{" "}
+            (acronym for Geo-Resource Engineering and Technology Students' Teachers' and Employers' Partnership) in 2008 to create a common platform for all the budding Mining engineers. The last
+            thirteen editions were filled with mind churning challenges, several informative guest lectures and workshops aimed at the expansion of thoughts into the unexplored realms of the field.
+        </p>
+    </div>
+</div>
+<!-- Add more sections like Swiper, Prof, SkillsSlider -->
+{% endblock %}
