@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Email - TMES{% endblock %}
+
+{% block content %}
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<form class="auth-form-card" method="POST" action="{{ url_for('verify_email_page') }}">
+    <div class="auth-header">
+        <p>Verify Email</p>
+    </div>
+    <div class="auth-body">
+        <div class="form-group">
+            <label for="current_email">Your Email</label>
+            <input type="email" id="current_email" value="{{ user.email }}" disabled style="opacity: 0.6; background: #f3f4f6;">
+        </div>
+        
+        <p class="verification-info">
+            {% if user.is_email_verified %}
+                <span style="color: #10b981;">✓ Your email is verified</span>
+            {% else %}
+                <span style="color: #f59e0b;">⚠ Your email is not verified</span>
+            {% endif %}
+        </p>
+        
+        {% if not user.is_email_verified %}
+        <p class="form-hint" style="margin-bottom: 16px;">
+            Click the button below to receive a verification OTP on your email.
+        </p>
+        
+        <div class="auth-actions">
+            <a href="{{ url_for('profile') }}" class="auth-btn-gray">Cancel</a>
+            <button type="submit" class="auth-btn-primary">Send OTP</button>
+        </div>
+        {% else %}
+        <div class="auth-actions" style="justify-content: center;">
+            <a href="{{ url_for('profile') }}" class="auth-btn-primary">Back to Profile</a>
+        </div>
+        {% endif %}
+    </div>
+</form>
+
+<p class="auth-copyright">©2025 TMES IIT Kgp. All rights reserved.</p>
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+.verification-info {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+{% for category, message in messages %}
+showToast('{{ message }}', '{{ category }}');
+{% endfor %}
+</script>
+{% endif %}
+{% endwith %}
+{% endblock %}

@@ -1,10 +1,857 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - Great Step{% endblock %}
+{% block title %}{{ user.first_name or user.email.split('@')[0] }} - Profile{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Override body styles for profile page */
+    body {
+        background: #0d1117 !important;
+    }
+    
+    .profile-page {
+        min-height: calc(100vh - 100px);
+        background: #0d1117 !important;
+        padding: 0;
+    }
+    
+    .profile-layout {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 24px 32px;
+        display: grid;
+        grid-template-columns: 296px 1fr;
+        gap: 24px;
+    }
+    
+    .profile-sidebar {
+        position: relative;
+    }
+    
+    .profile-name {
+        margin-bottom: 16px;
+    }
+    
+    .profile-name h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #f0f6fc !important;
+        margin: 0 0 4px 0;
+        line-height: 1.25;
+    }
+    
+    .profile-name .username {
+        font-size: 20px;
+        font-weight: 300;
+        color: #8b949e !important;
+        margin: 0;
+    }
+    
+    .profile-bio {
+        color: #8b949e !important;
+        font-size: 14px;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+    
+    .profile-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #21262d;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #8b949e !important;
+        font-size: 14px;
+    }
+    
+    .meta-item i {
+        width: 16px;
+        color: #8b949e !important;
+    }
+    
+    .verification-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .verification-status.verified {
+        background: rgba(35, 134, 54, 0.2) !important;
+        color: #3fb950 !important;
+        border: 1px solid rgba(35, 134, 54, 0.4);
+    }
+    
+    .verification-status.unverified {
+        background: rgba(187, 128, 9, 0.2) !important;
+        color: #d29922 !important;
+        border: 1px solid rgba(187, 128, 9, 0.4);
+    }
+    
+    .greatstep-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .greatstep-status.registered {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%) !important;
+        color: #a78bfa !important;
+        border: 1px solid rgba(102, 126, 234, 0.4);
+    }
+    
+    .greatstep-status.not-registered {
+        background: rgba(110, 118, 129, 0.2) !important;
+        color: #8b949e !important;
+        border: 1px solid rgba(110, 118, 129, 0.4);
+    }
+    
+    .register-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+        margin-top: 12px;
+    }
+    
+    .register-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        color: white !important;
+    }
+
+    .profile-content {
+        min-width: 0;
+    }
+    
+    .profile-tabs {
+        display: flex;
+        gap: 8px;
+        border-bottom: 1px solid #21262d;
+        margin-bottom: 24px;
+        overflow-x: auto;
+        padding-bottom: 0;
+    }
+    
+    .tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        font-size: 14px;
+        color: #8b949e !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 2px solid transparent !important;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    
+    .tab-btn:hover {
+        color: #f0f6fc !important;
+    }
+    
+    .tab-btn.active {
+        color: #f0f6fc !important;
+        border-bottom: 2px solid #f78166 !important;
+    }
+    
+    .tab-btn .count {
+        background: #30363d;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .settings-card {
+        background: #161b22 !important;
+        border: 1px solid #30363d !important;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        overflow: hidden;
+    }
+    
+    .settings-header {
+        padding: 16px;
+        background: #0d1117 !important;
+        border-bottom: 1px solid #30363d;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .settings-header h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #f0f6fc !important;
+    }
+    
+    .settings-body {
+        padding: 16px;
+    }
+    
+    .settings-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #21262d;
+    }
+    
+    .settings-row:last-child {
+        border-bottom: none;
+    }
+    
+    .settings-label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .settings-label span {
+        font-size: 14px;
+        color: #f0f6fc !important;
+        font-weight: 500;
+    }
+    
+    .settings-label small {
+        font-size: 12px;
+        color: #8b949e !important;
+    }
+    
+    .settings-value {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .settings-value .value-text {
+        color: #8b949e !important;
+        font-size: 14px;
+    }
+    
+    .btn-github {
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid;
+    }
+    
+    .btn-primary-github {
+        background: #238636 !important;
+        border-color: #238636 !important;
+        color: #ffffff !important;
+    }
+    
+    .btn-primary-github:hover {
+        background: #2ea043 !important;
+        border-color: #2ea043 !important;
+        color: #ffffff !important;
+    }
+    
+    .btn-secondary-github {
+        background: #21262d !important;
+        border-color: #30363d !important;
+        color: #c9d1d9 !important;
+    }
+    
+    .btn-secondary-github:hover {
+        background: #30363d !important;
+        border-color: #8b949e !important;
+        color: #ffffff !important;
+    }
+    
+    .btn-danger-github {
+        background: transparent !important;
+        border-color: #f85149 !important;
+        color: #f85149 !important;
+    }
+    
+    .btn-danger-github:hover {
+        background: #f85149 !important;
+        color: #ffffff !important;
+    }
+    
+    .form-group-github {
+        margin-bottom: 16px;
+    }
+    
+    .form-group-github label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #f0f6fc !important;
+        margin-bottom: 8px;
+    }
+    
+    .form-group-github input,
+    .form-group-github select {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #f0f6fc !important;
+        background: #0d1117 !important;
+        border: 1px solid #30363d !important;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+    
+    .form-group-github input:focus,
+    .form-group-github select:focus {
+        outline: none;
+        border-color: #58a6ff !important;
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+    }
+    
+    .form-group-github .helper-text {
+        font-size: 12px;
+        color: #8b949e !important;
+        margin-top: 4px;
+    }
+    
+    .pinned-section h3 {
+        font-size: 16px;
+        font-weight: 400;
+        color: #f0f6fc !important;
+        margin: 0 0 16px 0;
+    }
+    
+    .pinned-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .pinned-card {
+        background: #161b22 !important;
+        border: 1px solid #30363d !important;
+        border-radius: 6px;
+        padding: 16px;
+        transition: all 0.2s;
+        text-decoration: none !important;
+        display: block;
+    }
+    
+    .pinned-card:hover {
+        border-color: #8b949e !important;
+    }
+    
+    .pinned-card h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #58a6ff !important;
+        margin: 0 0 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .pinned-card p {
+        font-size: 12px;
+        color: #8b949e !important;
+        margin: 0 0 12px 0;
+        line-height: 1.5;
+    }
+    
+    .pinned-card .card-footer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 12px;
+        color: #8b949e !important;
+    }
+    
+    .pinned-card .card-footer span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    
+    .dot.green { background: #238636 !important; }
+    .dot.blue { background: #58a6ff !important; }
+    .dot.yellow { background: #d29922 !important; }
+    
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+    }
+    
+    .modal-overlay.active {
+        display: flex !important;
+    }
+    
+    .modal-dialog {
+        background: #161b22 !important;
+        border: 1px solid #30363d !important;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        position: relative;
+        z-index: 10000;
+    }
+    
+    .modal-dialog input,
+    .modal-dialog select,
+    .modal-dialog textarea,
+    .modal-dialog button {
+        position: relative;
+        z-index: 10001;
+    }
+    
+    .modal-header {
+        padding: 16px;
+        border-bottom: 1px solid #30363d;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #f0f6fc !important;
+    }
+    
+    .modal-close {
+        background: none !important;
+        border: none !important;
+        color: #8b949e !important;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        line-height: 1;
+    }
+    
+    .modal-close:hover {
+        color: #f0f6fc !important;
+        background: #30363d !important;
+    }
+    
+    .modal-body {
+        padding: 16px;
+    }
+    
+    .modal-footer {
+        padding: 16px;
+        border-top: 1px solid #30363d;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+    
+    .danger-zone {
+        border-color: #f85149 !important;
+    }
+    
+    .danger-zone .settings-header {
+        background: rgba(248, 81, 73, 0.1) !important;
+    }
+    
+    .danger-zone .settings-header h3 {
+        color: #f85149 !important;
+    }
+    
+    @media (max-width: 1012px) {
+        .profile-layout {
+            grid-template-columns: 256px 1fr;
+        }
+        
+        .pinned-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .profile-layout {
+            grid-template-columns: 1fr;
+            padding: 16px;
+        }
+        
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .profile-meta {
+            align-items: center;
+        }
+        
+        .settings-row {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .settings-value {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<section class="profile">
-    <h1>Profile</h1>
-    <p>User profile information.</p>
-</section>
+<div id="toast-container"></div>
+
+<div class="profile-page">
+    <div class="profile-layout">
+        <!-- Left Sidebar -->
+        <aside class="profile-sidebar">
+            <div class="profile-name">
+                <h1>{% if user.first_name or user.last_name %}{{ user.first_name or '' }} {{ user.last_name or '' }}{% else %}{{ user.email.split('@')[0] }}{% endif %}</h1>
+                <p class="username">{{ user.email.split('@')[0] }}</p>
+            </div>
+            
+            <p class="profile-bio">
+                {% if user.college %}{{ user.year or 'Student' }} at {{ user.college }}{% else %}TMES Great Step Member{% endif %}
+            </p>
+            
+            <div class="profile-meta">
+                {% if user.college %}
+                <div class="meta-item">
+                    <i class="fas fa-building"></i>
+                    <span>{{ user.college }}</span>
+                </div>
+                {% endif %}
+                <div class="meta-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ user.email }}</span>
+                </div>
+                {% if user.mobile %}
+                <div class="meta-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ user.mobile }}</span>
+                </div>
+                {% endif %}
+                <div class="meta-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Joined {{ user.created_at.strftime('%B %Y') }}</span>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                {% if user.is_verified %}
+                <span class="verification-status verified">
+                    <i class="fas fa-check-circle"></i> Email Verified
+                </span>
+                {% else %}
+                <span class="verification-status unverified">
+                    <i class="fas fa-exclamation-circle"></i> Email Not Verified
+                </span>
+                {% endif %}
+            </div>
+            
+            <!-- Great Step Registration Status -->
+            <div style="margin-bottom: 16px;">
+                {% if user.is_greatstep_registered %}
+                <span class="greatstep-status registered">
+                    <i class="fas fa-ticket-alt"></i> Great Step 2025 Registered
+                </span>
+                {% else %}
+                <span class="greatstep-status not-registered">
+                    <i class="fas fa-calendar-times"></i> Not Registered for Great Step
+                </span>
+                {% if user.is_verified %}
+                <a href="{{ url_for('greatstep_register') }}" class="register-btn">
+                    <i class="fas fa-star"></i> Register Now
+                </a>
+                {% else %}
+                <p style="color: #8b949e; font-size: 11px; margin-top: 8px;">
+                    <i class="fas fa-info-circle"></i> Verify your email to register
+                </p>
+                {% endif %}
+                {% endif %}
+            </div>
+        </aside>
+        
+        <!-- Right Content -->
+        <main class="profile-content">
+            <!-- Tabs -->
+            <nav class="profile-tabs">
+                <button class="tab-btn active" data-tab="overview">
+                    <i class="fas fa-book"></i> Overview
+                </button>
+                <button class="tab-btn" data-tab="events">
+                    <i class="fas fa-calendar-alt"></i> Events <span class="count">0</span>
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </nav>
+            
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="overview">
+                <!-- Pinned Events -->
+                <div class="pinned-section">
+                    <h3>Popular Events</h3>
+                    <div class="pinned-grid">
+                        <a href="{{ url_for('mine_a_thon') }}" class="pinned-card">
+                            <h4><i class="fas fa-code"></i> Mine-A-Thon</h4>
+                            <p>36-hour hackathon focused on mining industry solutions</p>
+                            <div class="card-footer">
+                                <span><span class="dot green"></span> Open</span>
+                                <span><i class="fas fa-users"></i> Team Event</span>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('geobotics') }}" class="pinned-card">
+                            <h4><i class="fas fa-robot"></i> Geobotics</h4>
+                            <p>Robotics competition for autonomous mining robots</p>
+                            <div class="card-footer">
+                                <span><span class="dot blue"></span> Technical</span>
+                                <span><i class="fas fa-trophy"></i> ₹50K Prize</span>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('pitch_perfect') }}" class="pinned-card">
+                            <h4><i class="fas fa-lightbulb"></i> Pitch Perfect</h4>
+                            <p>Startup pitch competition for innovative ideas</p>
+                            <div class="card-footer">
+                                <span><span class="dot yellow"></span> Business</span>
+                                <span><i class="fas fa-star"></i> Featured</span>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('quiz_spiel') }}" class="pinned-card">
+                            <h4><i class="fas fa-question-circle"></i> Quiz Spiel</h4>
+                            <p>Technical quiz on mining and earth sciences</p>
+                            <div class="card-footer">
+                                <span><span class="dot green"></span> Open</span>
+                                <span><i class="fas fa-clock"></i> Solo Event</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Events Tab -->
+            <div class="tab-content" id="events">
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <h3>Registered Events</h3>
+                    </div>
+                    <div class="settings-body" style="text-align: center; padding: 48px 16px;">
+                        <i class="fas fa-calendar-times" style="font-size: 48px; color: #30363d; margin-bottom: 16px; display: block;"></i>
+                        <p style="color: #8b949e; margin: 0 0 16px 0;">You haven't registered for any events yet</p>
+                        <a href="{{ url_for('events') }}" class="btn-github btn-primary-github">
+                            <i class="fas fa-search"></i> Browse Events
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <!-- Account Settings -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <h3><i class="fas fa-user-cog"></i> Account Settings</h3>
+                    </div>
+                    <div class="settings-body">
+                        <div class="settings-row">
+                            <div class="settings-label">
+                                <span>Email Address</span>
+                                <small>Your primary email for notifications</small>
+                            </div>
+                            <div class="settings-value">
+                                <span class="value-text">{{ user.email }}</span>
+                                {% if user.is_verified %}
+                                <span style="color: #3fb950; font-size: 12px; margin-left: 8px;">
+                                    <i class="fas fa-check-circle"></i> Verified
+                                </span>
+                                {% else %}
+                                <span style="color: #f85149; font-size: 12px; margin-left: 8px;">
+                                    <i class="fas fa-exclamation-circle"></i> Not verified
+                                </span>
+                                <a href="{{ url_for('verify_email_page') }}" class="btn-github btn-primary-github" style="margin-left: 8px; font-size: 12px; padding: 4px 10px;">
+                                    Verify Now
+                                </a>
+                                {% endif %}
+                                <a href="{{ url_for('change_email_page') }}" class="btn-github btn-secondary-github">
+                                    Change
+                                </a>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">
+                                <span>Password</span>
+                                <small>Secure your account with a strong password</small>
+                            </div>
+                            <div class="settings-value">
+                                <span class="value-text">••••••••</span>
+                                <a href="{{ url_for('reset_password') }}" class="btn-github btn-secondary-github">
+                                    Change
+                                </a>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">
+                                <span>Phone Number</span>
+                                <small>For account recovery and notifications</small>
+                            </div>
+                            <div class="settings-value">
+                                <span class="value-text">{{ user.mobile or 'Not set' }}</span>
+                                <a href="{{ url_for('change_phone_page') }}" class="btn-github btn-secondary-github">
+                                    {{ 'Change' if user.mobile else 'Add' }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                    </div>
+                    <div class="settings-body">
+                        <div class="settings-row">
+                            <div class="settings-label">
+                                <span>Email Verification</span>
+                                <small>{% if user.is_verified %}Your email has been verified{% else %}Please verify your email{% endif %}</small>
+                            </div>
+                            <div class="settings-value">
+                                {% if user.is_verified %}
+                                <span class="verification-status verified">
+                                    <i class="fas fa-check-circle"></i> Verified
+                                </span>
+                                {% else %}
+                                <span class="verification-status unverified">
+                                    <i class="fas fa-times-circle"></i> Not Verified
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="settings-label">
+                                <span>Active Sessions</span>
+                                <small>Manage your active login sessions</small>
+                            </div>
+                            <div class="settings-value">
+                                <span class="value-text">1 session</span>
+                                <a href="{{ url_for('signout') }}" class="btn-github btn-secondary-github">
+                                    <i class="fas fa-sign-out-alt"></i> Sign out
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Danger Zone -->
+                <div class="settings-card danger-zone">
+                    <div class="settings-header">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                    </div>
+                    <div class="settings-body">
+                        <div class="settings-row">
+                            <div class="settings-label">
+                                <span>Delete Account</span>
+                                <small>Permanently delete your account and all data</small>
+                            </div>
+                            <div class="settings-value">
+                                <button class="btn-github btn-danger-github" onclick="confirmDelete()">
+                                    <i class="fas fa-trash-alt"></i> Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.dataset.tab).classList.add('active');
+    });
+});
+
+// Delete account confirmation
+function confirmDelete() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        window.location.href = "{{ url_for('delete_account') }}";
+    }
+}
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <script>
+            {% for category, message in messages %}
+                if (typeof showToast === 'function') {
+                    showToast('{{ message }}', '{{ category }}');
+                } else {
+                    alert('{{ message }}');
+                }
+            {% endfor %}
+        </script>
+    {% endif %}
+{% endwith %}
 {% endblock %}

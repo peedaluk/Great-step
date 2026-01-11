@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Change Email - TMES{% endblock %}
+
+{% block content %}
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<form class="auth-form-card" method="POST" action="{{ url_for('change_email_page') }}">
+    <div class="auth-header">
+        <p>Change Email</p>
+    </div>
+    <div class="auth-body">
+        <div class="form-group">
+            <label for="current_email">Current Email</label>
+            <input type="email" id="current_email" value="{{ user.email }}" disabled style="opacity: 0.6; background: #f3f4f6;">
+        </div>
+        
+        <div class="form-group">
+            <label for="new_email">New Email Address</label>
+            <input type="email" id="new_email" name="new_email" placeholder="Enter new email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Confirm Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <p class="form-hint">Enter your password to confirm this change</p>
+        </div>
+        
+        <div class="auth-actions">
+            <a href="{{ url_for('profile') }}" class="auth-btn-gray">Cancel</a>
+            <button type="submit" class="auth-btn-primary">Update Email</button>
+        </div>
+    </div>
+</form>
+
+<p class="auth-copyright">©2025 TMES IIT Kgp. All rights reserved.</p>
+{% endblock %}
+
+{% block extra_scripts %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+{% for category, message in messages %}
+showToast('{{ message }}', '{{ category }}');
+{% endfor %}
+</script>
+{% endif %}
+{% endwith %}
+{% endblock %}

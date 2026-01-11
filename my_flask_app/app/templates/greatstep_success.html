@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Successful - Great Step{% endblock %}
+
+{% block extra_head %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    .success-card {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 16px;
+        padding: 50px 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+    
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        animation: scaleIn 0.5s ease-out;
+    }
+    
+    @keyframes scaleIn {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .success-icon i {
+        font-size: 50px;
+        color: white;
+    }
+    
+    .success-title {
+        font-size: 2rem;
+        color: #10b981;
+        margin-bottom: 10px;
+    }
+    
+    .success-subtitle {
+        color: #8b949e;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    .ticket-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        text-align: left;
+        border: 1px dashed rgba(16, 185, 129, 0.3);
+    }
+    
+    .ticket-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .ticket-header h3 {
+        color: #f0f6fc;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    .ticket-header .badge {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .ticket-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        color: #8b949e;
+        font-size: 0.95rem;
+    }
+    
+    .ticket-row span:last-child {
+        color: #c9d1d9;
+        text-align: right;
+    }
+    
+    .payment-id {
+        font-family: monospace;
+        font-size: 0.85rem;
+        color: #58a6ff !important;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-primary {
+        padding: 14px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+    
+    .btn-secondary {
+        padding: 14px 30px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: #c9d1d9;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+    
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        top: -10px;
+        animation: confetti-fall 3s linear forwards;
+    }
+    
+    @keyframes confetti-fall {
+        to {
+            top: 100vh;
+            transform: rotate(720deg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1 class="success-title">Registration Successful! 🎉</h1>
+        <p class="success-subtitle">Welcome to Great Step 2025, {{ registration.first_name }}!</p>
+        
+        <div class="ticket-card">
+            <div class="ticket-header">
+                <h3>🎫 Your Registration Details</h3>
+                <span class="badge">CONFIRMED</span>
+            </div>
+            
+            <div class="ticket-row">
+                <span>Name</span>
+                <span>{{ registration.first_name }} {{ registration.last_name }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>Email</span>
+                <span>{{ registration.email }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>Mobile</span>
+                <span>{{ registration.mobile }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>College</span>
+                <span>{{ registration.college }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>Year</span>
+                <span>{{ registration.year }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>Amount Paid</span>
+                <span>₹{{ registration.amount_paid // 100 }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>Payment ID</span>
+                <span class="payment-id">{{ registration.razorpay_payment_id }}</span>
+            </div>
+            <div class="ticket-row">
+                <span>Registration Date</span>
+                <span>{{ registration.payment_completed_at.strftime('%d %b %Y, %I:%M %p') if registration.payment_completed_at else 'N/A' }}</span>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{{ url_for('profile') }}" class="btn-primary">
+                <i class="fas fa-user"></i> View Profile
+            </a>
+            <a href="{{ url_for('events') }}" class="btn-secondary">
+                <i class="fas fa-calendar"></i> Explore Events
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Confetti animation
+const colors = ['#10b981', '#667eea', '#f59e0b', '#ef4444', '#8b5cf6'];
+for (let i = 0; i < 50; i++) {
+    setTimeout(() => {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 4000);
+    }, i * 50);
+}
+</script>
+{% endblock %}

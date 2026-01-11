@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% block title %}Verify Email - TMES{% endblock %}
+
+{% block extra_head %}
+<style>
+    .auth-container {
+        min-height: calc(100vh - 150px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        background-color: #0E2E50 !important;
+    }
+    
+    .auth-card {
+        background-color: #1a3a5c !important;
+        border-radius: 15px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .auth-header {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .auth-header h2 {
+        color: #ffffff !important;
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: 600 !important;
+    }
+    
+    .auth-header p {
+        color: rgba(255, 255, 255, 0.8) !important;
+        margin: 10px 0 0 0;
+        font-size: 0.95rem;
+    }
+    
+    .auth-body {
+        padding: 40px 30px;
+        background-color: #1a3a5c !important;
+    }
+    
+    .email-display {
+        background: rgba(255, 255, 255, 0.1) !important;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
+    .email-display p {
+        color: #94c2f5 !important;
+        margin: 0 0 5px 0;
+        font-size: 0.9rem;
+    }
+    
+    .email-display strong {
+        color: #ffffff !important;
+        font-size: 1.1rem;
+    }
+    
+    .otp-input-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+    
+    .otp-input {
+        width: 50px;
+        height: 60px;
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 600 !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 10px;
+        background-color: rgba(37, 99, 235, 0.3) !important;
+        color: #ffffff !important;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+    
+    .otp-input:focus {
+        border-color: #2563eb !important;
+        background-color: rgba(37, 99, 235, 0.4) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+    }
+    
+    .otp-input::-webkit-outer-spin-button,
+    .otp-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    .otp-input[type=number] {
+        -moz-appearance: textfield;
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600 !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(37, 99, 235, 0.4);
+    }
+    
+    .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: rgba(255, 255, 255, 0.6) !important;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+    }
+    
+    .back-link:hover {
+        color: #ffffff !important;
+    }
+    
+    .success-icon {
+        color: #3fb950;
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2><i class="fas fa-shield-alt"></i> Verify Your Email</h2>
+            <p>Enter the 6-digit code sent to your email</p>
+        </div>
+        <div class="auth-body">
+            <div class="email-display">
+                <p>Verification code sent to</p>
+                <strong>{{ email }}</strong>
+            </div>
+            
+            {% if dev_otp %}
+            <div style="background: linear-gradient(135deg, #059669 0%, #047857 100%); padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+                <p style="color: #a7f3d0; margin: 0 0 5px 0; font-size: 0.85rem;">🔧 DEV MODE - Your OTP Code:</p>
+                <strong style="color: #ffffff; font-size: 2rem; letter-spacing: 8px;">{{ dev_otp }}</strong>
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="{{ url_for('verify_current_email') }}" id="otp-form">
+                <div class="otp-input-container">
+                    <input type="number" class="otp-input" maxlength="1" data-index="0" autofocus>
+                    <input type="number" class="otp-input" maxlength="1" data-index="1">
+                    <input type="number" class="otp-input" maxlength="1" data-index="2">
+                    <input type="number" class="otp-input" maxlength="1" data-index="3">
+                    <input type="number" class="otp-input" maxlength="1" data-index="4">
+                    <input type="number" class="otp-input" maxlength="1" data-index="5">
+                </div>
+                
+                <input type="hidden" name="otp" id="otp-hidden">
+                
+                <button type="submit" class="submit-btn" id="verify-btn" disabled>
+                    <i class="fas fa-check-circle"></i> Verify Email
+                </button>
+            </form>
+            
+            <a href="{{ url_for('profile') }}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Profile
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const otpInputs = document.querySelectorAll('.otp-input');
+    const hiddenInput = document.getElementById('otp-hidden');
+    const verifyBtn = document.getElementById('verify-btn');
+    
+    // Handle OTP input
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', function(e) {
+            // Only allow single digit
+            this.value = this.value.slice(-1);
+            
+            // Move to next input
+            if (this.value && index < 5) {
+                otpInputs[index + 1].focus();
+            }
+            
+            updateHiddenInput();
+        });
+        
+        input.addEventListener('keydown', function(e) {
+            // Handle backspace
+            if (e.key === 'Backspace' && !this.value && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+            
+            // Handle arrow keys
+            if (e.key === 'ArrowLeft' && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+            if (e.key === 'ArrowRight' && index < 5) {
+                otpInputs[index + 1].focus();
+            }
+        });
+        
+        // Handle paste
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+            
+            pasteData.split('').forEach((char, i) => {
+                if (otpInputs[i]) {
+                    otpInputs[i].value = char;
+                }
+            });
+            
+            updateHiddenInput();
+            
+            // Focus last filled input or the one after pasted content
+            const focusIndex = Math.min(pasteData.length, 5);
+            otpInputs[focusIndex].focus();
+        });
+    });
+    
+    function updateHiddenInput() {
+        let otp = '';
+        otpInputs.forEach(input => {
+            otp += input.value;
+        });
+        hiddenInput.value = otp;
+        
+        // Enable/disable verify button
+        verifyBtn.disabled = otp.length !== 6;
+    }
+});
+</script>
+{% endblock %}

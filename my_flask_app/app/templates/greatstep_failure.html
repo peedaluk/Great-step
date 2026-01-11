@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Failed - Great Step{% endblock %}
+
+{% block extra_head %}
+<style>
+    .failure-container {
+        max-width: 500px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+    
+    .failure-card {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 16px;
+        padding: 50px 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+    
+    .failure-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        animation: shake 0.5s ease-out;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    .failure-icon i {
+        font-size: 50px;
+        color: white;
+    }
+    
+    .failure-title {
+        font-size: 1.8rem;
+        color: #ef4444;
+        margin-bottom: 10px;
+    }
+    
+    .failure-subtitle {
+        color: #8b949e;
+        font-size: 1rem;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+    
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn-primary {
+        padding: 14px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+    
+    .btn-secondary {
+        padding: 14px 30px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: #c9d1d9;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+    
+    .help-text {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #6e7681;
+        font-size: 0.85rem;
+    }
+    
+    .help-text a {
+        color: #58a6ff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="failure-container">
+    <div class="failure-card">
+        <div class="failure-icon">
+            <i class="fas fa-times"></i>
+        </div>
+        
+        <h1 class="failure-title">Payment Failed</h1>
+        <p class="failure-subtitle">
+            Unfortunately, your payment could not be processed. 
+            Don't worry - no amount has been deducted from your account.
+        </p>
+        
+        <div class="action-buttons">
+            <a href="{{ url_for('greatstep_register') }}" class="btn-primary">
+                <i class="fas fa-redo"></i> Try Again
+            </a>
+            <a href="{{ url_for('home') }}" class="btn-secondary">
+                <i class="fas fa-home"></i> Go to Home
+            </a>
+        </div>
+        
+        <div class="help-text">
+            If the amount was deducted but registration failed, 
+            it will be refunded within 5-7 business days.<br>
+            Need help? <a href="mailto:greatstept@gmail.com">Contact Support</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

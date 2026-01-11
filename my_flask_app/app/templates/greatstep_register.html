@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}Register for Great Step - TMES{% endblock %}
+
+{% block extra_head %}
+<style>
+    .register-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    .register-card {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .register-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .register-header h1 {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+    
+    .register-header p {
+        color: #8b949e;
+        font-size: 0.95rem;
+    }
+    
+    .fee-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        color: #c9d1d9;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    .form-group label .required {
+        color: #f85149;
+    }
+    
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: #f0f6fc;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+    
+    .form-group input::placeholder {
+        color: #6e7681;
+    }
+    
+    .form-group input:disabled {
+        background: rgba(255, 255, 255, 0.02);
+        color: #8b949e;
+        cursor: not-allowed;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    @media (max-width: 500px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .info-text {
+        color: #8b949e;
+        font-size: 0.85rem;
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .info-text a {
+        color: #58a6ff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="toast-container"></div>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h1>🎉 Register for Great Step 2025</h1>
+            <p>Complete your registration for the premier mining engineering fest at IIT Kharagpur</p>
+            <div class="fee-badge">
+                Registration Fee: ₹{{ (config.GREATSTEP_REGISTRATION_FEE // 100) if config else 500 }}
+            </div>
+        </div>
+        
+        <form method="POST" action="{{ url_for('greatstep_register') }}">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" value="{{ user.email }}" disabled>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">First Name <span class="required">*</span></label>
+                    <input type="text" id="first_name" name="first_name" 
+                           value="{{ user.first_name or '' }}" 
+                           placeholder="Enter your first name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Last Name <span class="required">*</span></label>
+                    <input type="text" id="last_name" name="last_name" 
+                           value="{{ user.last_name or '' }}" 
+                           placeholder="Enter your last name" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="mobile">Mobile Number <span class="required">*</span></label>
+                <input type="tel" id="mobile" name="mobile" 
+                       value="{{ user.mobile or '' }}" 
+                       placeholder="10-digit mobile number" 
+                       pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="college">College/University <span class="required">*</span></label>
+                <input type="text" id="college" name="college" 
+                       value="{{ user.college or '' }}" 
+                       placeholder="Enter your college name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="year">Year of Study <span class="required">*</span></label>
+                <select id="year" name="year" required>
+                    <option value="">Select your year</option>
+                    <option value="1st Year" {% if user.year == '1st Year' %}selected{% endif %}>1st Year</option>
+                    <option value="2nd Year" {% if user.year == '2nd Year' %}selected{% endif %}>2nd Year</option>
+                    <option value="3rd Year" {% if user.year == '3rd Year' %}selected{% endif %}>3rd Year</option>
+                    <option value="4th Year" {% if user.year == '4th Year' %}selected{% endif %}>4th Year</option>
+                    <option value="5th Year" {% if user.year == '5th Year' %}selected{% endif %}>5th Year</option>
+                    <option value="PG 1st Year" {% if user.year == 'PG 1st Year' %}selected{% endif %}>PG 1st Year</option>
+                    <option value="PG 2nd Year" {% if user.year == 'PG 2nd Year' %}selected{% endif %}>PG 2nd Year</option>
+                    <option value="PhD" {% if user.year == 'PhD' %}selected{% endif %}>PhD</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                Proceed to Payment →
+            </button>
+        </form>
+        
+        <p class="info-text">
+            By registering, you agree to our terms and conditions.<br>
+            Having trouble? <a href="mailto:greatstept@gmail.com">Contact us</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+{% for category, message in messages %}
+showToast('{{ message }}', '{{ category }}');
+{% endfor %}
+</script>
+{% endif %}
+{% endwith %}
+{% endblock %}

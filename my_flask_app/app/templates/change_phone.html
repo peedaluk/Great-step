@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Change Phone Number - TMES{% endblock %}
+
+{% block content %}
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<form class="auth-form-card" method="POST" action="{{ url_for('change_phone_page') }}">
+    <div class="auth-header">
+        <p>Change Phone</p>
+    </div>
+    <div class="auth-body">
+        <div class="form-group">
+            <label for="current_phone">Current Phone Number</label>
+            <input type="tel" id="current_phone" value="{{ user.mobile or 'Not set' }}" disabled style="opacity: 0.6; background: #f3f4f6;">
+        </div>
+        
+        <div class="form-group">
+            <label for="mobile">New Phone Number</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10" required>
+            <p class="form-hint">Enter a valid 10-digit mobile number</p>
+        </div>
+        
+        <div class="auth-actions">
+            <a href="{{ url_for('profile') }}" class="auth-btn-gray">Cancel</a>
+            <button type="submit" class="auth-btn-primary">Update Phone</button>
+        </div>
+    </div>
+</form>
+
+<p class="auth-copyright">©2025 TMES IIT Kgp. All rights reserved.</p>
+{% endblock %}
+
+{% block extra_scripts %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+{% for category, message in messages %}
+showToast('{{ message }}', '{{ category }}');
+{% endfor %}
+</script>
+{% endif %}
+{% endwith %}
+{% endblock %}

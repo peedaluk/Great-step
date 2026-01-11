@@ -2,6 +2,67 @@
 
 {% block title %}Home - Great Step{% endblock %}
 
+{% block extra_head %}
+<style>
+    .register-hero-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white !important;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .register-hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        color: white !important;
+    }
+    
+    .register-hero-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .explore-events-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        background: transparent;
+        color: #c9d1d9 !important;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .explore-events-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: white !important;
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 600px) {
+        .register-hero-btn, .explore-events-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 14px 24px;
+            font-size: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div id="home">
     <!-- Header Section -->
@@ -33,6 +94,16 @@
                 (acronym for Geo-Resource Engineering and Technology Students' Teachers' and Employers' Partnership) in 2008 to create a common platform for all the budding Mining engineers. The last
                 thirteen editions were filled with mind churning challenges, several informative guest lectures and workshops aimed at the expansion of thoughts into the unexplored realms of the field.
             </p>
+            
+            <!-- Register Now Button -->
+            <div style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+                <a href="{{ url_for('greatstep_register') }}" class="register-hero-btn">
+                    <i class="fas fa-star"></i> Register for Great Step 2025
+                </a>
+                <a href="{{ url_for('events') }}" class="explore-events-btn">
+                    <i class="fas fa-calendar-alt"></i> Explore Events
+                </a>
+            </div>
         </div>
     </section>
 
@@ -162,4 +233,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+{% for category, message in messages %}
+showToast('{{ message }}', '{{ category }}');
+{% endfor %}
+</script>
+{% endif %}
+{% endwith %}
 {% endblock %}

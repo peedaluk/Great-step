@@ -2,6 +2,51 @@
 
 {% block title %}Sign Up - TMES{% endblock %}
 
+{% block extra_css %}
+<style>
+    .auth-form-card {
+        max-width: 500px;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .form-row .form-group {
+        flex: 1;
+    }
+    
+    .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-group select:focus {
+        border-color: #2563eb;
+    }
+    
+    .form-group select option {
+        background-color: #1a3a5c;
+        color: #ffffff;
+    }
+    
+    @media (max-width: 500px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Toast Container -->
 <div id="toast-container"></div>
@@ -11,10 +56,49 @@
         <p>Sign Up</p>
     </div>
     <div class="auth-body">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" placeholder="John" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" placeholder="Doe" required>
+            </div>
+        </div>
+        
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="abc@gmail.com" required>
             <p class="form-error" id="email-error" style="display: none;">Enter a valid email</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="mobile">Mobile Number</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="9876543210" required pattern="[0-9]{10}">
+            <p class="form-error" id="mobile-error" style="display: none;">Enter a valid 10-digit mobile number</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="college">College/University</label>
+            <input type="text" id="college" name="college" placeholder="IIT Kharagpur" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="year">Year of Study</label>
+            <select id="year" name="year" required>
+                <option value="">Select Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+                <option value="5th Year">5th Year</option>
+                <option value="PG 1st Year">PG 1st Year</option>
+                <option value="PG 2nd Year">PG 2nd Year</option>
+                <option value="PhD">PhD</option>
+                <option value="Faculty">Faculty</option>
+                <option value="Other">Other</option>
+            </select>
         </div>
         
         <div class="form-group">
@@ -31,13 +115,8 @@
             <p class="form-error" id="cpassword-error" style="display: none;">Password doesn't match</p>
         </div>
         
-        <div class="form-group">
-            <label for="referral">Referral Code(Optional)</label>
-            <input type="text" id="referral" name="referral" placeholder="GS23-RAJ">
-        </div>
-        
         <div class="auth-actions-end">
-            <button type="submit" class="auth-btn-next">Next</button>
+            <button type="submit" class="auth-btn-next">Sign Up</button>
         </div>
         
         <p class="auth-footer-text">
@@ -89,12 +168,28 @@ document.getElementById('email').addEventListener('blur', function() {
     }
 });
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            showToast('{{ message }}', '{{ category }}');
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+// Mobile validation
+document.getElementById('mobile').addEventListener('blur', function() {
+    const mobileRegex = /^[0-9]{10}$/;
+    const error = document.getElementById('mobile-error');
+    
+    if (this.value && !mobileRegex.test(this.value)) {
+        error.style.display = 'block';
+    } else {
+        error.style.display = 'none';
+    }
+});
 </script>
+{% endblock %}
+
+{% block extra_scripts %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+{% for category, message in messages %}
+showToast('{{ message }}', '{{ category }}');
+{% endfor %}
+</script>
+{% endif %}
+{% endwith %}
 {% endblock %}

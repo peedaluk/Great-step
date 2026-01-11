@@ -72,11 +72,19 @@
                             <i class="far fa-file-alt"></i>About
                         </li>
                     </a>
+                    {% if session.get('user_id') %}
+                    <a class="nav-link{% if request.endpoint == 'profile' %} active{% endif %}" href="{{ url_for('profile') }}">
+                        <li class="nav-item">
+                            <i class="fas fa-user-circle"></i>Profile
+                        </li>
+                    </a>
+                    {% else %}
                     <a class="nav-link{% if request.endpoint in ['signin', 'signup', 'reset_password'] %} active{% endif %}" href="{{ url_for('signin') }}">
                         <li class="nav-item">
                             <i class="fas fa-user-circle"></i>Sign In
                         </li>
                     </a>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -151,24 +159,44 @@
 
     <!-- Toast Notifications -->
     <script>
+        // Track shown messages to prevent duplicates
+        const shownMessages = new Set();
+        
         function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
+            // Prevent duplicate messages within 2 seconds
+            const msgKey = `${message}_${type}`;
+            if (shownMessages.has(msgKey)) return;
+            shownMessages.add(msgKey);
+            setTimeout(() => shownMessages.delete(msgKey), 2000);
+            
+            let container = document.getElementById('toast-container');
             if (!container) {
-                const newContainer = document.createElement('div');
-                newContainer.id = 'toast-container';
-                document.body.appendChild(newContainer);
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
             }
+            
+            // Ensure container has proper styling
+            container.style.cssText = 'position: fixed; top: 80px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px;';
             
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
+            toast.style.cssText = 'min-width: 280px; padding: 16px 20px; border-radius: 8px; color: white; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: space-between; animation: slideIn 0.3s ease-out;';
+            
+            // Set background based on type
+            if (type === 'success') toast.style.background = '#10b981';
+            else if (type === 'error') toast.style.background = '#ef4444';
+            else if (type === 'warning') toast.style.background = '#f59e0b';
+            else toast.style.background = '#3b82f6';
+            
             toast.innerHTML = `
                 <span>${message}</span>
-                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+                <button style="background:none;border:none;color:white;font-size:20px;cursor:pointer;margin-left:15px;opacity:0.8;" onclick="this.parentElement.remove()">×</button>
             `;
             
-            document.getElementById('toast-container').appendChild(toast);
+            container.appendChild(toast);
             
-            // Auto remove after 5 seconds
+            // Auto remove after 5 seconds (reduced from 8)
             setTimeout(() => {
                 toast.style.animation = 'slideOut 0.3s ease-in forwards';
                 setTimeout(() => toast.remove(), 300);
