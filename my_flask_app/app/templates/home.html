@@ -9,21 +9,21 @@
         align-items: center;
         gap: 10px;
         padding: 16px 32px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white !important;
+        background: var(--gradient-gold);
+        color: #1a1a2e !important;
         border: none;
         border-radius: 50px;
         font-size: 1.1rem;
-        font-weight: 600;
+        font-weight: 700;
         text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: var(--shadow-gold);
     }
     
     .register-hero-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-        color: white !important;
+        box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+        color: #1a1a2e !important;
     }
     
     .register-hero-btn i {
@@ -36,8 +36,8 @@
         gap: 10px;
         padding: 16px 32px;
         background: transparent;
-        color: #c9d1d9 !important;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: var(--color-text) !important;
+        border: 2px solid var(--color-primary);
         border-radius: 50px;
         font-size: 1.1rem;
         font-weight: 500;
@@ -46,8 +46,8 @@
     }
     
     .explore-events-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.5);
+        background: var(--color-primary);
+        border-color: var(--color-primary);
         color: white !important;
         transform: translateY(-2px);
     }
@@ -70,9 +70,9 @@
         <div class="header-content">
             <div class="header-image">
                 <div>
-                    <img style="height: 90px;" src="{{ url_for('static', filename='images/Sponsors/ncl.png') }}" alt="NCL" />
+                    <img src="{{ url_for('static', filename='images/Sponsors/ncl.png') }}" alt="NCL" />
                 </div>
-                <h2 class="text__tmes">&amp;</h2>
+                <h2>&amp;</h2>
                 <div>
                     <img src="{{ url_for('static', filename='images/Sponsors/gmdc.jpg') }}" alt="GMDC" />
                 </div>
@@ -109,6 +109,9 @@
 
     <!-- Image Carousel/Swiper Section -->
     <section class="carousel2">
+        <div class="carousel2-title">
+            <h2>Event Highlights</h2>
+        </div>
         <div class="swiper-container">
             <div class="swiper-wrapper" id="carousel-track">
                 <div class="swiper-slide">
@@ -186,50 +189,68 @@
     </section>
 </div>
 
+<style>
+@keyframes smoothCarouselScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes smoothSponsorScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+#carousel-track {
+    animation: smoothCarouselScroll 60s linear infinite;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+#carousel-track:hover,
+#carousel-track.paused {
+    animation-play-state: paused !important;
+}
+
+#sponsor-track {
+    animation: smoothSponsorScroll 40s linear infinite;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+#sponsor-track:hover,
+#sponsor-track.paused {
+    animation-play-state: paused !important;
+}
+</style>
+
 <script>
-// Auto-scroll carousel
 document.addEventListener('DOMContentLoaded', function() {
+    // Event Highlights Carousel
     const track = document.getElementById('carousel-track');
     if (track) {
-        let scrollAmount = 0;
-        const scrollSpeed = 1;
+        // Clone content for seamless loop
+        const originalContent = track.innerHTML;
+        track.innerHTML = originalContent + originalContent;
         
-        function autoScroll() {
-            scrollAmount += scrollSpeed;
-            if (scrollAmount >= track.scrollWidth / 2) {
-                scrollAmount = 0;
-            }
-            track.style.transform = `translateX(-${scrollAmount}px)`;
-            requestAnimationFrame(autoScroll);
-        }
-        
-        // Clone slides for infinite scroll effect
-        const slides = track.innerHTML;
-        track.innerHTML = slides + slides;
-        
-        autoScroll();
+        // Prevent image dragging
+        track.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', e => e.preventDefault());
+        });
     }
     
-    // Auto-scroll sponsors
+    // Sponsors Carousel
     const sponsorTrack = document.getElementById('sponsor-track');
     if (sponsorTrack) {
-        let sponsorScroll = 0;
-        const sponsorSpeed = 1;
+        // Clone content for seamless loop
+        const originalContent = sponsorTrack.innerHTML;
+        sponsorTrack.innerHTML = originalContent + originalContent;
         
-        function autoScrollSponsors() {
-            sponsorScroll += sponsorSpeed;
-            if (sponsorScroll >= sponsorTrack.scrollWidth / 2) {
-                sponsorScroll = 0;
-            }
-            sponsorTrack.style.transform = `translateX(-${sponsorScroll}px)`;
-            requestAnimationFrame(autoScrollSponsors);
-        }
-        
-        // Clone sponsors for infinite scroll effect
-        const sponsors = sponsorTrack.innerHTML;
-        sponsorTrack.innerHTML = sponsors + sponsors;
-        
-        autoScrollSponsors();
+        // Prevent image dragging
+        sponsorTrack.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', e => e.preventDefault());
+        });
     }
 });
 </script>

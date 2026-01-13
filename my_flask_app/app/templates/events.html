@@ -4,13 +4,13 @@
 
 {% block content %}
 <section class="events">
-    <h1>Events</h1>
-    <div class="events-tabs">
+    <h1 class="scroll-up">Events</h1>
+    <div class="events-tabs scroll-up scroll-delay-1">
         <a href="{{ url_for('competitions') }}">Competitions</a>
         <a href="{{ url_for('workshops') }}">Workshops</a>
         <a href="{{ url_for('panel_discussion') }}">Panel Discussion</a>
     </div>
-    <div class="events-content">
+    <div class="events-content scroll-up scroll-delay-2">
         <!-- Content will be loaded based on the tab -->
     </div>
 </section>

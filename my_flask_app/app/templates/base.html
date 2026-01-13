@@ -202,6 +202,47 @@
                 setTimeout(() => toast.remove(), 300);
             }, 5000);
         }
+        
+        // ============================================
+        // SCROLL ANIMATIONS - Intersection Observer
+        // ============================================
+        window.addEventListener('load', function() {
+            var scrollElements = document.querySelectorAll('.scroll-left, .scroll-right, .scroll-up, .scroll-scale');
+            
+            console.log('=== SCROLL ANIMATION INIT ===');
+            console.log('Elements found:', scrollElements.length);
+            
+            if (scrollElements.length === 0) {
+                console.log('No scroll elements on this page');
+                return;
+            }
+            
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        console.log('>> Animating:', entry.target.tagName, entry.target.className);
+                        entry.target.classList.add('scroll-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+            
+            scrollElements.forEach(function(el, index) {
+                var rect = el.getBoundingClientRect();
+                var isBelow = rect.top > window.innerHeight;
+                console.log(index + ':', el.tagName, '- top:', Math.round(rect.top), '- below fold:', isBelow);
+                
+                if (isBelow) {
+                    observer.observe(el);
+                } else {
+                    el.classList.add('scroll-visible');
+                }
+            });
+        });
     </script>
 
     {% block extra_scripts %}{% endblock %}

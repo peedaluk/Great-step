@@ -1,31 +1,82 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
 
-/* CSS Variables - Using React's theme1 (dark theme) as default */
+/* ============================================
+   MINING/INDUSTRIAL THEME - Great Step 2025
+   ============================================ */
+
 :root {
+    /* Typography */
     --font-default: 'Barlow', sans-serif;
     --font-sz-p: 1.2rem;
     
-    /* Gradients - Dark Theme */
-    --gradient-text: #77e1ac;
-    --gradient-tmes: #6D67E4;
-    --gradiant_nav: #0a1521;
+    /* ===================
+       PRIMARY COLORS
+       =================== */
+    --color-bg: #1a1a2e;              /* Dark blue-gray - main background */
+    --color-bg-secondary: #16213e;     /* Navy - cards, containers */
+    --color-bg-tertiary: #0f3460;      /* Deep blue - accents, hover states */
     
-    /* Colors - Dark Theme (theme1 from React) */
-    --color-pri: #000000;
-    --color-sec: #fff;
-    --color-bg: #0E2E50;
-    --color-text: #EFF5F5;
-    --color-subtext: #aa92ff;
-    --color-footer: #0E2E50;
-    --color-events: #001428;
-    --color-events-text: #87c1ff;
-    --color-about: #0d1b2a;
-    --color-about-text: #f0e1ff;
-    --color-about-cards: #001428;
-    --color-tmes: #0d1b2a;
-    --color-great: #0d1b2a;
-    --color-error: rgb(255, 255, 240);
+    /* ===================
+       ACCENT COLORS
+       =================== */
+    --color-primary: #e94560;          /* Rust red - primary buttons, CTAs */
+    --color-primary-hover: #ff6b6b;    /* Lighter red on hover */
+    --color-secondary: #f59e0b;        /* Amber/Gold - secondary accents */
+    --color-gold: #d4af37;             /* Metallic gold - premium accents */
+    
+    /* ===================
+       TEXT COLORS
+       =================== */
+    --color-text: #eaeaea;             /* Primary text */
+    --color-text-secondary: #a0aec0;   /* Muted text, descriptions */
+    --color-text-muted: #718096;       /* Very muted text */
+    --color-heading: #ffffff;          /* Headings */
+    
+    /* ===================
+       STATUS COLORS
+       =================== */
+    --color-success: #22c55e;          /* Green - success states */
+    --color-error: #ef4444;            /* Red - error states */
+    --color-warning: #f59e0b;          /* Amber - warning states */
+    --color-info: #3b82f6;             /* Blue - info states */
+    
+    /* ===================
+       GRADIENTS
+       =================== */
+    --gradient-primary: linear-gradient(135deg, #e94560 0%, #0f3460 100%);
+    --gradient-gold: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+    --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --gradient-card: linear-gradient(145deg, #16213e 0%, #1a1a2e 100%);
+    --gradient-text: linear-gradient(135deg, #e94560 0%, #f59e0b 100%);
+    --gradient-tmes: linear-gradient(135deg, #d4af37 0%, #e94560 100%);
+    
+    /* ===================
+       BORDERS & SHADOWS
+       =================== */
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-color-light: rgba(255, 255, 255, 0.2);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(233, 69, 96, 0.3);
+    --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
+    
+    /* ===================
+       LEGACY VARIABLES (for backward compatibility)
+       =================== */
+    --gradiant_nav: #1a1a2e;
+    --color-pri: #1a1a2e;
+    --color-sec: #eaeaea;
+    --color-subtext: #f59e0b;
+    --color-footer: #0f3460;
+    --color-events: #16213e;
+    --color-events-text: #f59e0b;
+    --color-about: #16213e;
+    --color-about-text: #eaeaea;
+    --color-about-cards: #0f3460;
+    --color-tmes: #1a1a2e;
+    --color-great: #16213e;
 }
 
 /* Light theme (optional) */
@@ -57,7 +108,21 @@
     box-sizing: border-box;
     scroll-behavior: smooth;
     font-family: var(--font-default);
-    font-weight: normal !important;
+}
+
+/* Preserve Font Awesome icon weights */
+.fa, .fas, .far, .fal, .fat, .fad, .fab, .fa-solid, .fa-regular, .fa-light, .fa-thin, .fa-duotone, .fa-brands {
+    font-weight: 900 !important;
+    font-family: "Font Awesome 6 Free" !important;
+}
+
+.far, .fa-regular {
+    font-weight: 400 !important;
+}
+
+.fab, .fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
 }
 
 *:before,
@@ -284,3 +349,515 @@ ul, ol {
         font-size: 16px;
     }
 }
+
+/* ============================================
+   UNIFIED COMPONENT STYLES - Mining Theme
+   ============================================ */
+
+/* ---------- BUTTONS ---------- */
+.btn-mining-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--gradient-primary);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-mining-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    color: #ffffff !important;
+}
+
+.btn-mining-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--gradient-gold);
+    color: #1a1a2e !important;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-mining-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+    color: #1a1a2e !important;
+}
+
+.btn-mining-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    color: var(--color-text) !important;
+    border: 2px solid var(--border-color-light);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-mining-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-primary);
+    color: var(--color-primary) !important;
+}
+
+/* ---------- CARDS ---------- */
+.card-mining {
+    background: var(--gradient-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.card-mining:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-color-light);
+}
+
+.card-mining-header {
+    background: var(--gradient-primary);
+    padding: 20px 24px;
+    border-radius: 12px 12px 0 0;
+    margin: -24px -24px 24px -24px;
+}
+
+.card-mining-header h3 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+/* ---------- FORM INPUTS ---------- */
+.input-mining {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--color-text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-mining::placeholder {
+    color: var(--color-text-muted);
+}
+
+.input-mining:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: rgba(233, 69, 96, 0.05);
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+}
+
+.input-mining:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ---------- LABELS ---------- */
+.label-mining {
+    display: block;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* ---------- PAGE CONTAINERS ---------- */
+.page-mining {
+    min-height: 100vh;
+    background: var(--color-bg);
+    padding: 40px 20px;
+}
+
+.container-mining {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ---------- SECTION HEADINGS ---------- */
+.heading-mining {
+    color: var(--color-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.heading-mining-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subheading-mining {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+}
+
+/* ---------- BADGES ---------- */
+.badge-mining {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-mining-success {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--color-success);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-mining-warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--color-warning);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-mining-error {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--color-error);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-mining-gold {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--color-gold);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* ---------- DIVIDERS ---------- */
+.divider-mining {
+    height: 1px;
+    background: var(--border-color);
+    margin: 24px 0;
+}
+
+/* ---------- LINKS ---------- */
+.link-mining {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.link-mining:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+}
+
+.link-gold {
+    color: var(--color-gold);
+}
+
+.link-gold:hover {
+    color: var(--color-secondary);
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px var(--color-primary); }
+    50% { box-shadow: 0 0 20px var(--color-primary); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ============================================
+   PAGE ENTRANCE ANIMATIONS
+   ============================================ */
+
+/* Fade In */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade In Down */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade In Left */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Fade In Right */
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Scale In */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Slide In Up with Bounce */
+@keyframes slideInUpBounce {
+    0% {
+        opacity: 0;
+        transform: translateY(60px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Blur In */
+@keyframes blurIn {
+    from {
+        opacity: 0;
+        filter: blur(10px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+/* Animation Classes */
+.anim-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.anim-fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.anim-fade-in-down {
+    opacity: 0;
+    animation: fadeInDown 0.6s ease-out forwards;
+}
+
+.anim-fade-in-left {
+    opacity: 0;
+    animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.anim-fade-in-right {
+    opacity: 0;
+    animation: fadeInRight 0.6s ease-out forwards;
+}
+
+.anim-scale-in {
+    opacity: 0;
+    animation: scaleIn 0.5s ease-out forwards;
+}
+
+.anim-slide-up-bounce {
+    opacity: 0;
+    animation: slideInUpBounce 0.7s ease-out forwards;
+}
+
+.anim-blur-in {
+    opacity: 0;
+    animation: blurIn 0.5s ease-out forwards;
+}
+
+/* Staggered Animation Delays */
+.anim-delay-1 { animation-delay: 0.1s !important; }
+.anim-delay-2 { animation-delay: 0.2s !important; }
+.anim-delay-3 { animation-delay: 0.3s !important; }
+.anim-delay-4 { animation-delay: 0.4s !important; }
+.anim-delay-5 { animation-delay: 0.5s !important; }
+.anim-delay-6 { animation-delay: 0.6s !important; }
+
+/* ============================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ============================================ */
+
+/* Base scroll animation states - hidden initially */
+/* Override any automatic animations when scroll classes are present */
+.scroll-animate,
+.scroll-left,
+.scroll-right,
+.scroll-up,
+.scroll-scale,
+.types.scroll-up,
+.events_cards.scroll-up,
+.events_second.scroll-up,
+div.scroll-left,
+div.scroll-right,
+article.scroll-left,
+article.scroll-right,
+article.scroll-up,
+h2.scroll-scale,
+.about_container.scroll-up {
+    opacity: 0 !important;
+    animation: none !important;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.scroll-left {
+    transform: translateX(-80px) !important;
+}
+
+.scroll-right {
+    transform: translateX(80px) !important;
+}
+
+.scroll-up {
+    transform: translateY(60px) !important;
+}
+
+.scroll-scale {
+    transform: scale(0.85) !important;
+}
+
+/* Visible state when scrolled into view */
+.scroll-visible,
+.scroll-left.scroll-visible,
+.scroll-right.scroll-visible,
+.scroll-up.scroll-visible,
+.scroll-scale.scroll-visible {
+    opacity: 1 !important;
+    transform: translateX(0) translateY(0) scale(1) !important;
+}
+
+/* Staggered scroll delays */
+.scroll-delay-1 { transition-delay: 0.1s !important; }
+.scroll-delay-2 { transition-delay: 0.2s !important; }
+.scroll-delay-3 { transition-delay: 0.3s !important; }
+.scroll-delay-4 { transition-delay: 0.4s !important; }
+.scroll-delay-5 { transition-delay: 0.5s !important; }
+.scroll-delay-6 { transition-delay: 0.6s !important; }
+
+/* Page Content Animation */
+.page-content {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Card Entrance Animation */
+.card-animate {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Hero Section Animation */
+.hero-animate {
+    animation: fadeIn 0.8s ease-out, scaleIn 0.8s ease-out;
+}
+
+/* Heading Animation */
+.heading-animate {
+    animation: fadeInDown 0.6s ease-out;
+}
+
+/* Form Card Animation */
+.auth-form-card {
+    animation: scaleIn 0.4s ease-out, fadeIn 0.4s ease-out;
+}
+
+/* ---------- UTILITY CLASSES ---------- */
+.text-gold { color: var(--color-gold) !important; }
+.text-primary { color: var(--color-primary) !important; }
+.text-muted { color: var(--color-text-muted) !important; }
+.text-success { color: var(--color-success) !important; }
+.text-error { color: var(--color-error) !important; }
+
+.bg-dark { background: var(--color-bg) !important; }
+.bg-card { background: var(--color-bg-secondary) !important; }
+.bg-accent { background: var(--color-bg-tertiary) !important; }
+
+.border-mining { border: 1px solid var(--border-color) !important; }
+.rounded-mining { border-radius: 12px !important; }
+
+.shadow-mining { box-shadow: var(--shadow-md) !important; }
+.shadow-glow { box-shadow: var(--shadow-glow) !important; }

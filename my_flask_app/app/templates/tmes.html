@@ -64,157 +64,37 @@
     </section>
 </div>
 
+<style>
+@keyframes smoothCarouselScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+#tmes-carousel-track {
+    animation: smoothCarouselScroll 50s linear infinite;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+#tmes-carousel-track:hover,
+#tmes-carousel-track.paused {
+    animation-play-state: paused !important;
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // TMES carousel with seamless infinite loop and drag functionality
     const tmesTrack = document.getElementById('tmes-carousel-track');
     if (tmesTrack) {
-        const slides = Array.from(tmesTrack.children);
-        const slideCount = slides.length;
-        let isDragging = false;
-        let startX = 0;
-        let currentTranslate = 0;
-        let prevTranslate = 0;
-        let animationID;
-        let autoScrollInterval;
-        
-        // Clone slides at beginning and end for seamless loop
-        slides.forEach(slide => {
-            const cloneEnd = slide.cloneNode(true);
-            tmesTrack.appendChild(cloneEnd);
-        });
-        slides.forEach(slide => {
-            const cloneStart = slide.cloneNode(true);
-            tmesTrack.insertBefore(cloneStart, tmesTrack.firstChild);
-        });
-        
-        // Get slide width after cloning
-        function getSlideWidth() {
-            return slides[0].offsetWidth + 20; // 20 is the gap
-        }
-        
-        // Start at the first "real" slide (after clones)
-        function initPosition() {
-            const slideWidth = getSlideWidth();
-            currentTranslate = -slideWidth * slideCount;
-            prevTranslate = currentTranslate;
-            tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
-        }
-        
-        // Check and handle loop boundaries
-        function checkBounds() {
-            const slideWidth = getSlideWidth();
-            const minTranslate = -slideWidth * (slideCount * 2);
-            const maxTranslate = 0;
-            
-            if (currentTranslate <= minTranslate) {
-                currentTranslate += slideWidth * slideCount;
-                tmesTrack.style.transition = 'none';
-                tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
-                tmesTrack.offsetHeight; // Force reflow
-            } else if (currentTranslate >= maxTranslate) {
-                currentTranslate -= slideWidth * slideCount;
-                tmesTrack.style.transition = 'none';
-                tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
-                tmesTrack.offsetHeight; // Force reflow
-            }
-            prevTranslate = currentTranslate;
-        }
-        
-        // Step-wise autoscroll
-        function autoScroll() {
-            if (!isDragging) {
-                const slideWidth = getSlideWidth();
-                tmesTrack.style.transition = 'transform 0.5s ease-in-out';
-                currentTranslate -= slideWidth;
-                tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
-                
-                setTimeout(() => {
-                    checkBounds();
-                }, 550);
-            }
-        }
-        
-        function startAutoScroll() {
-            autoScrollInterval = setInterval(autoScroll, 2500);
-        }
-        
-        function stopAutoScroll() {
-            clearInterval(autoScrollInterval);
-        }
-        
-        // Drag functionality
-        tmesTrack.style.cursor = 'grab';
-        
-        function dragStart(e) {
-            isDragging = true;
-            startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-            tmesTrack.style.cursor = 'grabbing';
-            tmesTrack.style.transition = 'none';
-            stopAutoScroll();
-            animationID = requestAnimationFrame(animation);
-        }
-        
-        function dragEnd() {
-            isDragging = false;
-            tmesTrack.style.cursor = 'grab';
-            cancelAnimationFrame(animationID);
-            
-            // Snap to nearest slide
-            const slideWidth = getSlideWidth();
-            const movedBy = currentTranslate - prevTranslate;
-            
-            if (Math.abs(movedBy) > slideWidth / 4) {
-                if (movedBy < 0) {
-                    currentTranslate = prevTranslate - slideWidth;
-                } else {
-                    currentTranslate = prevTranslate + slideWidth;
-                }
-            } else {
-                currentTranslate = prevTranslate;
-            }
-            
-            tmesTrack.style.transition = 'transform 0.3s ease-out';
-            tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
-            prevTranslate = currentTranslate;
-            
-            setTimeout(() => {
-                checkBounds();
-                startAutoScroll();
-            }, 350);
-        }
-        
-        function dragMove(e) {
-            if (!isDragging) return;
-            e.preventDefault();
-            const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-            currentTranslate = prevTranslate + currentX - startX;
-        }
-        
-        function animation() {
-            tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
-            if (isDragging) requestAnimationFrame(animation);
-        }
-        
-        // Mouse events
-        tmesTrack.addEventListener('mousedown', dragStart);
-        tmesTrack.addEventListener('mouseup', dragEnd);
-        tmesTrack.addEventListener('mouseleave', dragEnd);
-        tmesTrack.addEventListener('mousemove', dragMove);
-        
-        // Touch events
-        tmesTrack.addEventListener('touchstart', dragStart);
-        tmesTrack.addEventListener('touchend', dragEnd);
-        tmesTrack.addEventListener('touchmove', dragMove);
+        // Clone all slides for seamless infinite loop
+        const originalContent = tmesTrack.innerHTML;
+        tmesTrack.innerHTML = originalContent + originalContent;
         
         // Prevent image dragging
         tmesTrack.querySelectorAll('img').forEach(img => {
             img.addEventListener('dragstart', e => e.preventDefault());
         });
-        
-        // Initialize
-        initPosition();
-        startAutoScroll();
     }
 });
 </script>

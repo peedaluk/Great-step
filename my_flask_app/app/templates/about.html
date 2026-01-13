@@ -4,20 +4,20 @@
 
 {% block content %}
 <section class="about">
-    <h1 class="animate-charcter heading" style="display: flex; justify-content: center; background-image: linear-gradient(-225deg, #994bff 0%,#18ffff 29%,#1c0082 67%,#deeeff 100%);">
+    <h1 class="animate-charcter heading">
         About Us
     </h1>
 
     <!-- HOD and President -->
-    <div class="about_container">
+    <div class="about_container scroll-up">
         <section class="info_cards">
-            <article>
+            <article class="scroll-left scroll-delay-1">
                 <h2>Head of Department</h2>
                 <h3>Prof. Biswajit Samanta</h3>
                 <img src="{{ url_for('static', filename='images/Profile/hod.jpg') }}" alt="HOD">
                 <div class="links"></div>
             </article>
-            <article>
+            <article class="scroll-right scroll-delay-2">
                 <h2>President</h2>
                 <h3>Prof. Rakesh Kumar</h3>
                 <img src="{{ url_for('static', filename='images/Profile/president.jpg') }}" alt="President">
@@ -27,9 +27,9 @@
     </div>
 
     <!-- Vice President and Treasurer -->
-    <div class="about_container">
+    <div class="about_container scroll-up">
         <section class="info_cards">
-            <article>
+            <article class="scroll-left scroll-delay-1">
                 <h2>Vice President</h2>
                 <h3>Sujitha Vaddavalli</h3>
                 <img src="{{ url_for('static', filename='images/Profile/gsec/sujitha.jpg') }}" alt="Vice President">
@@ -45,7 +45,7 @@
                     </a>
                 </div>
             </article>
-            <article>
+            <article class="scroll-right scroll-delay-2">
                 <h2>Treasurer</h2>
                 <h3>Harshal Yuvraj</h3>
                 <img src="{{ url_for('static', filename='images/Profile/gsec/harshal.jpg') }}" alt="Treasurer">
@@ -65,17 +65,17 @@
     </div>
 
     <!-- Divider -->
-    <div class="divider">
+    <div class="divider scroll-scale">
         <div></div>
     </div>
 
     <!-- General Secretaries -->
-    <div class="about_container">
-        <h2 class="animate-charcter Gsec_h2" style="background-image: linear-gradient(-225deg, #994bff 0%,#18ffff 29%,#1c0082 67%,#deeeff 100%);">
+    <div class="about_container scroll-up">
+        <h2 class="animate-charcter Gsec_h2 scroll-scale">
             General Secretaries
         </h2>
         <section class="info_cards">
-            <article>
+            <article class="scroll-up scroll-delay-1">
                 <h3>Shivakumar Kethavath</h3>
                 <img src="{{ url_for('static', filename='images/Profile/gsec/shiva.jpg') }}" alt="G-Sec">
                 <div class="links">
@@ -94,18 +94,18 @@
     </div>
 
     <!-- Divider -->
-    <div class="divider">
+    <div class="divider scroll-scale">
         <div></div>
     </div>
 
     <!-- Core Team Heads -->
-    <div class="about_container">
-        <h2 class="animate-charcter Gsec_h2" style="display: flex; justify-content: center; background-image: linear-gradient(-225deg, #994bff 0%,#18ffff 29%,#1c0082 67%,#deeeff 100%);">
+    <div class="about_container scroll-up">
+        <h2 class="animate-charcter Gsec_h2 scroll-scale" style="display: flex; justify-content: center; background-image: linear-gradient(-225deg, #994bff 0%,#18ffff 29%,#1c0082 67%,#deeeff 100%);">
             Core Team Heads
         </h2>
 
         <!-- CTH Buttons -->
-        <div class="cth_buttons" style="justify-content: center; display: flex; flex-wrap: wrap;">
+        <div class="cth_buttons scroll-up scroll-delay-1" style="justify-content: center; display: flex; flex-wrap: wrap;">
             <div id="button-2" class="changebutton change-active" data-head="web" onclick="showHead('web')">
                 <div id="slide"></div>
                 <span>Web Heads</span>
