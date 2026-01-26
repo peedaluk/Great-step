@@ -1,2 +1,0 @@
-xsmtpsib-c3c6906a5dec75ae75ad41505f53d4d3f7919e8239cfa94a6b202248ac52ad3e-MeQOdQxXk67hHIAE  - SMTP key
-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  - API key
